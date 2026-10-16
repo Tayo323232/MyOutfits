@@ -18,7 +18,11 @@ Keep the cream/sage/green look (Young Serif + Onest, hanger logo, Pip mascot, Pi
 - IndexedDB `myoutfits-photos` / store `images` `{id, blob, createdAt}`. Photo IDs are immutable;
   looks share IDs with pieces; a photo is deleted only when nothing references it.
 - Piece fields: id, name, type, color, cut, sleeves, photoId?, formality(1-3), warmth, material(standard|suede),
-  rainReady, occasions[everyday|work|special], inLaundry, favorite. Missing fields → `itemDefaults(type)`.
+  rainReady, occasions[everyday|work|special], inLaundry, favorite, mannequin(print|color, only with a photo).
+  Missing fields → `itemDefaults(type)`.
+- `mannequin`: "color" = `build(s)` drops the photo for that piece (template details + color only); cards and
+  flat lay still show the photo. Default from `mannequinDefault(blob)`: print only for clean cut-outs with crisp
+  print edges; original photos, plain or shadowy/wrinkled ones → color. Pieces without the field get it once at start.
 
 ## Backup (.zip, version 1)
 `myoutfits-backup.json` + `photos/<id>.<ext>` + `README.txt`. Restore: validate → CRC/signature check →
@@ -38,8 +42,8 @@ Playwright + headless Chromium was used (network mocked: Open-Meteo, three.js, f
 Not verified: real iPhone/Android, Safari/Firefox, real IMG.LY model download, real GPU speed.
 
 ## Open items / next ideas
-1. Photo print on mannequin looks muddy for plain or wrinkled photos → add per-piece
-   "Show on mannequin: print / color only", default color-only for non-cut-out or shadowy photos.
+1. Done (v17): per-piece "Show on mannequin: Print / Color only". Tune `mannequinDefault` thresholds
+   with real photos (tested only on synthetic images).
 2. Scarf and bag strap clip through the body ("physics later").
 3. Cloud backup/sync later (Supabase was considered), keep structure ready for profiles + friend-only DMs.
 4. Name/domain undecided (myoutfits.co and myout.fit exist; .ca needs Canadian presence — owner is an
